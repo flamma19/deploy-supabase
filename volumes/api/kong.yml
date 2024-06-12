@@ -21,6 +21,8 @@ acls:
     group: anon
   - consumer: service_role
     group: admin
+  - consumer: DASHBOARD
+    group: admin
 
 ###
 ### Dashboard credentials

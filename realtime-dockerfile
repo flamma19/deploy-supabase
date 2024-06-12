@@ -10,10 +10,10 @@ ENV DB_PASSWORD="your-super-secret-and-long-postgres-password"
 ENV DB_NAME="postgres"
 ENV DB_AFTER_CONNECT_QUERY='SET search_path TO _realtime'
 ENV DB_ENC_KEY=supabaserealtime
-ENV API_JWT_SECRET="your-super-secret-jwt-token-with-at-least-32-characters-long"
+ENV API_JWT_SECRET="MxFP4SYNDw5LUE2ORvEOCd7lJtN3mxoHZMlg7DzrSUEzqUTzRjb8VoCF90aGx1TLK/J2x6zPuTaih/7tFuPhUA=="
 ENV FLY_ALLOC_ID=fly123
 ENV FLY_APP_NAME=realtime
-ENV SECRET_KEY_BASE=UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/u2oq
+ENV SECRET_KEY_BASE="UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/u2oq"
 ENV ERL_AFLAGS="-proto_dist inet_tcp"
 ENV ENABLE_TAILSCALE="false"
 ENV DNS_NODES="''"
