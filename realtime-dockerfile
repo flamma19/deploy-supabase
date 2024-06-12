@@ -17,8 +17,13 @@ ENV SECRET_KEY_BASE=UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/
 ENV ERL_AFLAGS="-proto_dist inet_tcp"
 ENV ENABLE_TAILSCALE="false"
 ENV DNS_NODES="''"
-# Set the command to start the service
-CMD ["sh", "-c", "/app/bin/migrate && /app/bin/realtime eval 'Realtime.Release.seeds(Realtime.Repo)' && /app/bin/server"]
+
+# Set the healthcheck
+HEALTHCHECK --start-period=5s --interval=5s --timeout=5s --retries=3 \
+  CMD curl -sSfL --head -o /dev/null -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE" "http://localhost:4000/api/tenants/realtime-dev/health"
+
+# Start the realtime server
+ENTRYPOINT ["/bin/sh", "-c", "/app/bin/migrate && /app/bin/realtime eval 'Realtime.Release.seeds(Realtime.Repo)' && /app/bin/server"]
 
 # Expose the service port
 EXPOSE 4000
