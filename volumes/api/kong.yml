@@ -228,7 +228,7 @@ services:
   ## Protected Dashboard - catch all remaining routes
   - name: dashboard
     _comment: 'Studio: /* -> http://localhost:3000/*'
-    url: http://localhost:3000/
+    url: http://supabase-studio.tank.svc:3000/
     routes:
       - name: dashboard-all
         strip_path: true
