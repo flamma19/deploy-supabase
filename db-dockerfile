@@ -17,12 +17,18 @@ COPY ./volumes/db/realtime.sql /docker-entrypoint-initdb.d/migrations/99-realtim
 COPY ./volumes/db/webhooks.sql /docker-entrypoint-initdb.d/init-scripts/98-webhooks.sql
 COPY ./volumes/db/roles.sql /docker-entrypoint-initdb.d/init-scripts/99-roles.sql
 COPY ./volumes/db/jwt.sql /docker-entrypoint-initdb.d/init-scripts/99-jwt.sql
-COPY ./volumes/db/data /var/lib/postgresql/data
 COPY ./volumes/db/logs.sql /docker-entrypoint-initdb.d/migrations/99-logs.sql
 
 
-# Set the command to start the PostgreSQL server with the custom configuration
+# Set healthcheck
+HEALTHCHECK --start-period=5s --interval=5s --timeout=5s --retries=10 \
+  CMD pg_isready -U postgres -h localhost
+
+# Set command
 CMD ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "log_min_messages=fatal"]
 
-# Expose the PostgreSQL port
+# Expose the dynamically set POSTGRES_PORT
 EXPOSE 5432
+
+# Persist data and configuration
+VOLUME ["./volumes/db/data:/var/lib/postgresql/data:Z", "db-config:/etc/postgresql-custom"]
