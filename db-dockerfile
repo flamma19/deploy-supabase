@@ -1,0 +1,28 @@
+# Use the supabase/postgres image as the base image
+FROM supabase/postgres:15.1.1.41
+
+# Set environment variables
+ENV POSTGRES_HOST="/var/run/postgresql"
+ENV PGPORT=5432
+ENV POSTGRES_PORT=5432
+ENV PGPASSWORD="your-super-secret-and-long-postgres-password"
+ENV POSTGRES_PASSWORD="your-super-secret-and-long-postgres-password"
+ENV PGDATABASE="postgres"
+ENV POSTGRES_DB="postgres"
+ENV JWT_SECRET="your-super-secret-jwt-token-with-at-least-32-characters-long"
+ENV JWT_EXP="3600"
+
+# Copy custom configuration files and SQL scripts into the container
+COPY ./volumes/db/realtime.sql /docker-entrypoint-initdb.d/migrations/99-realtime.sql
+COPY ./volumes/db/webhooks.sql /docker-entrypoint-initdb.d/init-scripts/98-webhooks.sql
+COPY ./volumes/db/roles.sql /docker-entrypoint-initdb.d/init-scripts/99-roles.sql
+COPY ./volumes/db/jwt.sql /docker-entrypoint-initdb.d/init-scripts/99-jwt.sql
+COPY ./volumes/db/data /var/lib/postgresql/data
+COPY ./volumes/db/logs.sql /docker-entrypoint-initdb.d/migrations/99-logs.sql
+
+
+# Set the command to start the PostgreSQL server with the custom configuration
+CMD ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "log_min_messages=fatal"]
+
+# Expose the PostgreSQL port
+EXPOSE 5432
